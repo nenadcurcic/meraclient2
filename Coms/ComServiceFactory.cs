@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MeraClient2.Coms
 {
-    class ComServiceContext
+    class ComServiceFactory
     {
     }
 }
