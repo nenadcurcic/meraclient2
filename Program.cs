@@ -1,6 +1,8 @@
 ﻿using MeraClient2.Coms;
+using MeraClient2.DataInputStrategy;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,12 +17,30 @@ namespace MeraClient2
             Console.WriteLine("Client started...");
             
             Console.WriteLine("Selecting server:");
-            IComService server = ComServiceFactory.GetComService("mera");
+            IComService selectedServer = ComServiceFactory.GetComService("mera");
 
             Console.WriteLine("---------------------");
 
             int inputSelection = SelectUserInput();
-            
+
+            DataInputContext inputContext;
+
+            switch (inputSelection)
+            {
+                case 1:
+                    inputContext = new DataInputContext(new InputFromUser());
+                    break;
+                case 2:
+                    inputContext = new DataInputContext(new InputFromDb());
+                    break;
+                case 3:
+                    inputContext = new DataInputContext(new InputFromFile());
+                    break;
+                default:
+                    inputContext = null;
+                    break;
+            }
+            inputContext.RunSelectedDataInput(selectedServer);
             Console.ReadKey();
         }
 
