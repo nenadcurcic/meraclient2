@@ -11,10 +11,11 @@ namespace MeraClient2
     {
         static void Main(string[] args)
         {
+
             Console.WriteLine("Client started...");
             
             Console.WriteLine("Selecting server:");
-            IComService server = new MeraServerComService();
+            IComService server = ComServiceFactory.GetComService("mera");
 
             Console.WriteLine("---------------------");
 
