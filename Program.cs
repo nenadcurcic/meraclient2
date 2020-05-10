@@ -11,7 +11,7 @@ namespace MeraClient2
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
 
             Console.WriteLine("Client started...");
@@ -40,7 +40,7 @@ namespace MeraClient2
                     inputContext = null;
                     break;
             }
-            inputContext.RunSelectedDataInput(selectedServer);
+            await inputContext.RunSelectedDataInput(selectedServer);
             Console.ReadKey();
         }
 
