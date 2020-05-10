@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Web;
 using DTOs;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace MeraClient2.Coms
 {
@@ -20,6 +21,7 @@ namespace MeraClient2.Coms
         #region
         private const string GET_WORDS_COUNT = "/api/words/GetWordsCount";
         private const string GET_ARTICLE_BY_SUBJECT = "/api/words/GetArticleBySubject";
+        private const string GET_ARTICLES_LIST = "/api/words/GetTextsCatalog";
         #endregion
 
         private readonly HttpClient client;
@@ -61,7 +63,27 @@ namespace MeraClient2.Coms
 
         public async Task<Catalog> GetArticlesList()
         {
-            throw new NotImplementedException();
+            try
+            {
+                // var builder = new UriBuilder(URL + PORT + GET_ARTICLES_LIST);
+                // string url = builder.ToString();
+                string url = URL + PORT + GET_ARTICLES_LIST;
+
+                string responseBody = await client.GetStringAsync(url);
+
+                dynamic jsonResponseBody = JsonConvert.DeserializeObject(responseBody);
+                JArray TextSubjectsArray = jsonResponseBody.TextSubjectsList;
+
+                Catalog response = new Catalog
+                {
+                    TextSubjectsList = TextSubjectsArray.ToObject<List<string>>()
+                };
+                return response;
+            }
+            catch (HttpRequestException e)
+            {
+                return null;
+            }
         }
 
         public async Task<int> GetWordsCount(string text)
