@@ -6,18 +6,20 @@ using System.Threading.Tasks;
 using System.Net.Http;
 using System.Web;
 using DTOs;
+using Newtonsoft.Json;
 
 namespace MeraClient2.Coms
 {
     internal class MeraServerComService : IComService
     {
         
-        private const string URL = "http://localhost:";
-        private const string PORT = "44555";
-        //private const string PORT = "44312";
+        private const string URL = "https://localhost:";
+        //private const string PORT = "44555";
+        private const string PORT = "44312";
 
         #region
         private const string GET_WORDS_COUNT = "/api/words/GetWordsCount";
+        private const string GET_ARTICLE_BY_SUBJECT = "/api/words/GetArticleBySubject";
         #endregion
 
         private readonly HttpClient client;
@@ -33,7 +35,28 @@ namespace MeraClient2.Coms
 
         public async Task<TextContainer> GetArticleBySubject(string subject)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var builder = new UriBuilder(URL + PORT + GET_ARTICLE_BY_SUBJECT);
+                var query = HttpUtility.ParseQueryString(builder.Query);
+                query["subject"] = subject;
+                builder.Query = query.ToString();
+                string url = builder.ToString();
+
+                string responseBody = await client.GetStringAsync(url);
+
+                dynamic jsonResponseBody = JsonConvert.DeserializeObject(responseBody);
+                TextContainer response = new TextContainer
+                {
+                    Subject = jsonResponseBody.Subject,
+                    Text = jsonResponseBody.Text,
+                };
+                return response;
+            }
+            catch (HttpRequestException e)
+            {
+                return null;
+            }
         }
 
         public async Task<Catalog> GetArticlesList()
