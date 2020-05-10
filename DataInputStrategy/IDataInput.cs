@@ -9,6 +9,6 @@ namespace MeraClient2.DataInputStrategy
 {
     public interface IDataInput
     {
-        void GetTextFromSourceAndSendRequest(IComService comService);
+        Task GetTextFromSourceAndSendRequest(IComService comService);
     }
 }

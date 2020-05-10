@@ -1,4 +1,5 @@
 ﻿using MeraClient2.Coms;
+using System.Threading.Tasks;
 
 namespace MeraClient2.DataInputStrategy
 {
@@ -16,9 +17,9 @@ namespace MeraClient2.DataInputStrategy
             this.DataInput = dataInput;
         }
 
-        public void RunSelectedDataInput(IComService comService)
+        public async Task RunSelectedDataInput(IComService comService)
         {
-            DataInput.GetTextFromSourceAndSendRequest(comService);
+            await DataInput.GetTextFromSourceAndSendRequest(comService);
         }
     }
 }
