@@ -1,7 +1,7 @@
-﻿using System;
+﻿using System.Configuration;
+using System.Collections.Specialized;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Net.Http;
 using System.Web;
@@ -9,15 +9,13 @@ using DTOs;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
+
 namespace MeraClient2.Coms
 {
     internal class MeraServerComService : IComService
     {
-        
-        private const string URL = "https://localhost:";
-        //private const string PORT = "44555";
-        private const string PORT = "44312";
-
+        private readonly string URL;
+        private readonly string PORT;
         #region
         private const string GET_WORDS_COUNT = "/api/words/GetWordsCount";
         private const string GET_ARTICLE_BY_SUBJECT = "/api/words/GetArticleBySubject";
@@ -29,6 +27,8 @@ namespace MeraClient2.Coms
 
         public MeraServerComService()
         {
+            URL = ConfigurationManager.AppSettings.Get("Url");
+            PORT = ConfigurationManager.AppSettings.Get("Port");
             client = new HttpClient();
             Console.WriteLine("Selected Mera Server");
             Console.WriteLine($"URL: {URL}");
@@ -57,6 +57,7 @@ namespace MeraClient2.Coms
             }
             catch (HttpRequestException e)
             {
+                Console.WriteLine(e.Message);
                 return null;
             }
         }
@@ -65,10 +66,7 @@ namespace MeraClient2.Coms
         {
             try
             {
-                // var builder = new UriBuilder(URL + PORT + GET_ARTICLES_LIST);
-                // string url = builder.ToString();
                 string url = URL + PORT + GET_ARTICLES_LIST;
-
                 string responseBody = await client.GetStringAsync(url);
 
                 dynamic jsonResponseBody = JsonConvert.DeserializeObject(responseBody);
@@ -82,28 +80,29 @@ namespace MeraClient2.Coms
             }
             catch (HttpRequestException e)
             {
+                Console.WriteLine(e.Message);
                 return null;
             }
         }
 
         public async Task<int> GetWordsCount(string text)
         {
-            int res = 0;
             try
             {
-                var builder = new UriBuilder(URL+PORT+ GET_WORDS_COUNT);
+                var builder = new UriBuilder(URL + PORT + GET_WORDS_COUNT);
                 var query = HttpUtility.ParseQueryString(builder.Query);
                 query["word"] = text;
                 builder.Query = query.ToString();
                 string url = builder.ToString();
 
                 string responseBody = await client.GetStringAsync(url);
+                int res;
                 Int32.TryParse(responseBody, out res);
                 return res;
             }
             catch (HttpRequestException e)
             {
-
+                Console.WriteLine(e.Message);
                 return 0;
             }
         }
