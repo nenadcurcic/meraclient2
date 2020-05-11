@@ -1,5 +1,4 @@
 ﻿using System.Configuration;
-using System.Collections.Specialized;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -16,7 +15,8 @@ namespace MeraClient2.Coms
     {
         private readonly string URL;
         private readonly string PORT;
-        #region
+
+        #region endpoints
         private const string GET_WORDS_COUNT = "/api/words/GetWordsCount";
         private const string GET_ARTICLE_BY_SUBJECT = "/api/words/GetArticleBySubject";
         private const string GET_ARTICLES_LIST = "/api/words/GetTextsCatalog";
@@ -97,7 +97,7 @@ namespace MeraClient2.Coms
 
                 string responseBody = await client.GetStringAsync(url);
                 int res;
-                Int32.TryParse(responseBody, out res);
+                int.TryParse(responseBody, out res);
                 return res;
             }
             catch (HttpRequestException e)

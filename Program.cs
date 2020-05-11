@@ -46,7 +46,7 @@ namespace MeraClient2
 
         static private int SelectUserInput()
         {
-            string userinput = "user input";
+            string userinput = "from user";
             string dbinput = "from db";
             string fileinput = "from file";
             Console.WriteLine($"Select method (type number 1, 2, 3):\n -1 {userinput} \n -2 {dbinput} \n -3 {fileinput}");
@@ -54,7 +54,7 @@ namespace MeraClient2
           
             do
             {
-                Int32.TryParse(Console.ReadLine(), out x);
+                int.TryParse(Console.ReadLine(), out x);
             } while (x > 3 || x < 0);
 
             switch (x)

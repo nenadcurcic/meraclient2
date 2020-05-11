@@ -9,12 +9,12 @@ namespace MeraClient2.DataInputStrategy
 
         public DataInputContext(IDataInput dataInput)
         {
-            this.DataInput = dataInput;
+            DataInput = dataInput;
         }
 
         public void SetStrategy(IDataInput dataInput)
         {
-            this.DataInput = dataInput;
+            DataInput = dataInput;
         }
 
         public async Task RunSelectedDataInput(IComService comService)

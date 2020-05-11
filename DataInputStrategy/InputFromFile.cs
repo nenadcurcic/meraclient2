@@ -19,7 +19,7 @@ namespace MeraClient2.DataInputStrategy
                 Console.WriteLine("-----------------------------");
                 Console.WriteLine("Reading file:");
 
-                string text = await ReadFile();
+                string text = await ReadFile(FILE_LOCATION);
 
                 Console.WriteLine($"Text body: \n {text}");
                 int wordsCount = await comService.GetWordsCount(text);
@@ -28,14 +28,14 @@ namespace MeraClient2.DataInputStrategy
             });
         }
 
-        private async Task<string> ReadFile()
+        private async Task<string> ReadFile(string filePath)
         {
             string text = string.Empty;
             string dir = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
   
             await Task.Run(() =>
             {
-                var fileStream = new FileStream(dir + FILE_LOCATION, FileMode.Open, FileAccess.Read);
+                var fileStream = new FileStream(dir + filePath, FileMode.Open, FileAccess.Read);
                 using (var streamReader = new StreamReader(fileStream, Encoding.UTF8))
                 {
                     text = streamReader.ReadToEnd();
